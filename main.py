@@ -1,12 +1,18 @@
 from fastapi import FastAPI
 from router.routes import router
 from starlette.middleware.sessions import SessionMiddleware
+from fastapi.middleware.cors import CORSMiddleware
 import os
 import uvicorn
 
 app=FastAPI()
 
 app.add_middleware(SessionMiddleware,secret_key=os.getenv("SECRET_KEY"))
+app.add_middleware( CORSMiddleware,
+                   allow_origins=["http://localhost:3000"],
+                   allow_credentials=True,
+                   allow_methods=["*"],
+                   allow_headers=["*"],)
 
 app.include_router(router)
 
