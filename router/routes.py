@@ -11,9 +11,9 @@ import os
 
 
 github_sso=GithubSSO(
-    os.getenv("github_client_id"),
-    os.getenv("github_client_secret"),
-    os.getenv("github_redirect_uri")
+    client_id=os.getenv("github_client_id"),
+    client_secret=os.getenv("github_client_secret"),
+    redirect_uri=os.getenv("github_redirect_uri")
 )
 
 router=APIRouter(prefix="/v1/github")
