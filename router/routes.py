@@ -64,14 +64,16 @@ async def callback(request:Request,db:Session=Depends(get_db)):
 
     except Exception as ex:
         raise HTTPException(status_code=400,detail=str(ex))
+    
 
+    
     response=JSONResponse({
         "id":user.id,
         "github_id":user.github_id,
         "username":user.name,
     })
-    response.set_cookie("github_id",str(user.github_id))
-    response.set_cookie("username",user.name)
+    response.set_cookie(key="github_id",value=str(user.github_id),httponly=True,samesite="lax")
+    response.set_cookie(key="username",value=user.name,httponly=True,samesite="lax")
     return response
 # @router.get("/logout")
 @router.post("/logout")
@@ -79,16 +81,17 @@ async def logout(response:Response):
     response.delete_cookie("github_id")
     response.delete_cookie("username")
     return {"message":"logout succcessfully"}
-@router.get("/who")
-async def whoAmI(request:Request,db:Session=Depends(get_db)):
-    github_id=request.cookies.get("github_id")
-    if not github_id:
-        return {"user":None}
-    user=db.query(TestUser).filter(TestUser.github_id==github_id).first()
-    if not user:
-        raise HTTPException(status_code=404,detail="no user found")
-    return {
-        "id":user.id,
-        "github_id":user.github_id,
-        "username":user.name
-    }
+
+# @router.get("/who")
+# async def whoAmI(request:Request,db:Session=Depends(get_db)):
+#     github_id=request.cookies.get("github_id")
+#     if not github_id:
+#         return {"user":None}
+#     user=db.query(TestUser).filter(TestUser.github_id==github_id).first()
+#     if not user:
+#         raise HTTPException(status_code=404,detail="no user found")
+#     return {
+#         "id":user.id,
+#         "github_id":user.github_id,
+#         "username":user.name
+#     }
