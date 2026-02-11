@@ -1,10 +1,10 @@
 "use client";
-import {login} from "../lib/api";
+import {login} from "../services/api";
 export default function Home(){
   return(
-    <div style={{padding:40}}>
+    <div style={{padding:40, textAlign:"center"}}>
       <button onClick={login}>
-        Login with GITHUB
+        <h1><b>Login with GITHUB</b></h1>
       </button>
     </div>
   );
